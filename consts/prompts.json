@@ -1,0 +1,4 @@
+{
+  "generate_character": "Generate a random Dungeons and Dragons character. Respond with only JSON object containing all stats using the following type interface {name: string;class: string;race: string;background: string;alignment: string;stats: {strength: number;dexterity: number;constitution: number;intelligence: number;wisdom: number;charisma: number;};proficiencies: string[];equipment: string[];}",
+  "begin_game": "I want to play a game with you. The game is like Dungeons and Dragons except you are the dungeon master and I will play as a player with the character you just generated. Begin by generating a story in the style of Dungeons and Dragons. When a choice needs to be made wait for my prompt. When I give you my decision, continue with the story. If a dice roll is required, ask me if I want to roll the dice. If I say yes to rolling the dice, choose a random number between one and 20 and continue with the game."
+}
