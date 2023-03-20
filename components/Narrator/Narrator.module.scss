@@ -1,0 +1,43 @@
+.narratorContainer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+
+  &.visible {
+    opacity: 1;
+  }
+
+  .narrator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    padding: 0 2em;
+
+    &.fadeIn {
+      opacity: 1;
+    }
+
+    &.fadeOut {
+      opacity: 0;
+    }
+
+    h1 {
+      font-size: 2rem;
+      text-transform: uppercase;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      color: rgb(203, 203, 203);
+    }
+  }
+}

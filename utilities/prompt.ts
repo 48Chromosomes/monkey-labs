@@ -1,6 +1,6 @@
 import { ChatLog } from '@/types';
 
-export const send = async ({ chatLogs }: { chatLogs: ChatLog[] }) => {
+export const sendPrompt = async ({ chatLogs }: { chatLogs: ChatLog[] }) => {
   const res: Response = await fetch('/api/prompt', {
     method: 'POST',
     headers: {

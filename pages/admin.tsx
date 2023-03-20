@@ -1,13 +1,11 @@
 import React from 'react';
 import Head from 'next/head';
-import dynamic from 'next/dynamic';
-import styles from '@/styles/Home.module.scss';
+import styles from '@/styles/Admin.module.scss';
 
-const Stage = dynamic(() => import('@/components/Stage/Stage'), {
-  ssr: false,
-});
+import Console from '@/components/Console/Console';
+import Actions from '@/components/Actions/Actions';
 
-export default function Home() {
+export default function Admin() {
   return (
     <>
       <Head>
@@ -17,7 +15,8 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <Stage />
+        <Console />
+        <Actions />
       </main>
     </>
   );
