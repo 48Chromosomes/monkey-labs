@@ -4,12 +4,14 @@ import styles from './Stage.module.scss';
 
 import { useAppStore } from '@/stores/AppStore';
 
+import Dice from '@/components/Dice/Dice';
+
 const Narrator = dynamic(() => import('@/components/Narrator/Narrator'), {
   ssr: false,
 });
 
 export default function Stage() {
-  const background = useAppStore((state) => state.background);
+  const { background } = useAppStore();
   const [backgroundStyle, setBackgroundStyle] = useState({});
 
   useEffect(() => {

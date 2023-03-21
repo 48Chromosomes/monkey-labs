@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { Bellefair } from 'next/font/google';
+
 import styles from './Narrator.module.scss';
 
 import { useAppStore } from '@/stores/AppStore';
 import { sendTTS } from '@/utilities/tts';
 import { speak } from '@/utilities/speak';
+import { listen } from '@/utilities/messanger';
+
+const inter = Bellefair({ weight: '400', subsets: ['latin'] });
 
 export default function Narrator() {
   const { narrationList } = useAppStore();
@@ -38,6 +43,10 @@ export default function Narrator() {
     playNarration();
   }, [canPlay, index, narrationList]);
 
+  listen('triggerNarration', () => {
+    setCanPlay(true);
+  });
+
   useEffect(() => setIsFadingIn(true), [transcription]);
 
   const handleStartAudioContext = () => setCanPlay(true);
@@ -46,11 +55,15 @@ export default function Narrator() {
     <>
       <div className={`${styles.narratorContainer} ${containerVisible && styles.visible}`}>
         <div className={`${styles.narrator} ${isFadingOut && styles.fadeOut} ${isFadingIn && styles.fadeIn}`}>
-          <h1>{transcription}</h1>
+          <h1 className={inter.className}>{transcription}</h1>
         </div>
       </div>
 
-      {!canPlay && <button onClick={handleStartAudioContext}>Play</button>}
+      {!canPlay && (
+        <button style={{ marginTop: '-4em', position: 'fixed' }} onClick={handleStartAudioContext}>
+          Play
+        </button>
+      )}
     </>
   );
 }

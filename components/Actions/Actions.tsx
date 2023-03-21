@@ -4,6 +4,8 @@ import styles from './Actions.module.scss';
 import { useAppStore } from '@/stores/AppStore';
 import prompts from '@/consts/prompts.json';
 
+import { send } from '@/utilities/messanger';
+
 export default function Actions() {
   const { sendPrompt, resetGame, character, waitingForResponse } = useAppStore();
   const [disableCharacterButton, setDisableCharacterButton] = useState(false);
@@ -32,9 +34,19 @@ export default function Actions() {
     setDisableBeginGameButton(false);
   };
 
+  const triggerNarration = () => {
+    send({ message: 'triggerNarration' });
+  };
+
   return (
     <>
       <div className={styles.actionsContainer}>
+        <button className={styles.button} type='button' onClick={triggerNarration} disabled={disableCharacterButton}>
+          Trigger Narration
+        </button>
+
+        <hr className={styles.break}></hr>
+
         <button className={styles.button} type='button' onClick={sendCharacterPrompt} disabled={disableCharacterButton}>
           Get character
         </button>

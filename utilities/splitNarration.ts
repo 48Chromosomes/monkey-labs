@@ -32,7 +32,9 @@ export const splitParagraph = ({ paragraph }: { paragraph: string | undefined })
       }
     }
 
-    result.push(currentString.trim());
+    if (currentString.length > 0) {
+      result.push(currentString.trim());
+    }
 
     return result;
   }

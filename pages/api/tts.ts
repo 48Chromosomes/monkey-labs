@@ -7,8 +7,8 @@ const client = new textToSpeech.TextToSpeechClient();
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const request = {
     input: { text: req.body.text },
-    voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
-    audioConfig: { audioEncoding: 'MP3' },
+    voice: { languageCode: 'en-US', name: 'en-GB-News-J' },
+    audioConfig: { audioEncoding: 'MP3', pitch: -3 },
   };
 
   //@ts-ignore
