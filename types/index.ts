@@ -57,3 +57,11 @@ export type AppStoreInterface = (
   sendPrompt: ({ prompt }: { prompt: string }) => Promise<void>;
   getImage: ({ prompt }: { prompt: string }) => Promise<void>;
 };
+
+export interface Messages {
+  [key: string]: string;
+}
+
+export interface PromptMessage {
+  [key: string]: string;
+}

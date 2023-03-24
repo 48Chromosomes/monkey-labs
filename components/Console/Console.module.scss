@@ -6,6 +6,8 @@
   height: 100vh;
   background-color: #f6f6f6;
   padding-bottom: 4.5em;
+  flex-grow: 1;
+  width: 1000px;
 
   .chatLogContainer {
     display: flex;

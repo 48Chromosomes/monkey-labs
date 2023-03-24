@@ -7,10 +7,10 @@ import { sendPrompt } from '@/utilities/prompt';
 import { sendImagePrompt } from '@/utilities/midjourney';
 import { splitParagraph } from '@/utilities/splitNarration';
 
-import prompts from '@/consts/prompts.json';
+import { PROMPTS } from '@/consts/prompts';
 
 export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () => any) => ({
-  background: '/default-background.webp',
+  background: '',
   character: null,
   chatLogs: [],
   currentNarration: '',
@@ -18,7 +18,7 @@ export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () =>
   waitingForResponse: false,
   resetGame: () =>
     set({
-      background: '/default-background.webp',
+      background: '',
       character: null,
       chatLogs: [],
       currentNarration: '',
@@ -28,7 +28,7 @@ export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () =>
   sendPrompt: async ({ prompt }: { prompt: string }) => {
     const { chatLogs, getImage } = get();
 
-    const isCharacterCreatorPrompt = prompt === prompts.generate_character;
+    const isCharacterCreatorPrompt = prompt === PROMPTS.GENERATE_CHARACTER;
 
     chatLogs.push({
       role: 'user',
@@ -54,7 +54,7 @@ export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () =>
         currentNarration: JSON.parse(response.content).story,
         narrationList: splitParagraph({ paragraph: JSON.parse(response.content).story }),
       }),
-      ...(isCharacterCreatorPrompt && { character: response.content }),
+      ...(isCharacterCreatorPrompt && { character: JSON.parse(response.content) }),
     }));
   },
   getImage: async ({ prompt }: { prompt: string }) => {

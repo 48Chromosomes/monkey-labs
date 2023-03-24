@@ -12,12 +12,11 @@ socket.onerror = (error: Error) => {
 
 export const send = ({ message }: { message: string }) => {
   if (socket && socket.readyState === WebSocket.OPEN) {
+    console.log('Outgoing message:', message);
     socket.send(message);
   }
 };
 
-export const listen = (listener: string, callback: () => void) => {
-  socket.onmessage = (event: any) => {
-    if (event.data === listener) callback();
-  };
+socket.onmessage = (event: MessageEvent) => {
+  console.log('Incoming message:', event.data);
 };

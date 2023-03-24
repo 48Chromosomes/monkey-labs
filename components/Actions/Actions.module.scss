@@ -1,9 +1,16 @@
 .actionsContainer {
-  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-basis: 500px;
+  background: #232323;
+  height: 100vh;
   padding: 0 1em;
 
   .break {
     margin: 2em 0;
+    width: 100%;
   }
 
   .button {
