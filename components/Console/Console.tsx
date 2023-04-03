@@ -8,7 +8,7 @@ import { useAppStore } from '@/stores/AppStore';
 import { ChatLog } from '@/types';
 
 import ChatAvatar from '@/components/Console/Avatar/Avatar';
-import Listener from '@/components/Actions/Listener/Listener';
+import Listener from '@/components/Console/Listener/Listener';
 
 export default function Console() {
   const { chatLogs, setChatLogs } = useAppStore();
