@@ -12,6 +12,7 @@ const initialChatLog: ChatLog = {
 
 export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () => any) => ({
   chatLogs: [initialChatLog],
+  listenerActive: false,
   resetChat: () =>
     set({
       chatLogs: [initialChatLog],
@@ -21,6 +22,7 @@ export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () =>
       chatLogs: [...state.chatLogs, { role, content, silent, sourceDocs }],
     }));
   },
+  toggleListener: () => set((state: any) => ({ listenerActive: !state.listenerActive })),
 });
 
 export const useAppStore = create(

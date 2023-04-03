@@ -10,6 +10,8 @@ export type AppStoreInterface = (
   get: () => any,
 ) => {
   chatLogs: ChatLog[];
+  listenerActive: boolean;
   resetChat: () => void;
   setChatLogs: ({ role, content, silent }: ChatLog) => void;
+  toggleListener: () => void;
 };

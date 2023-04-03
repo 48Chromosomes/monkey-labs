@@ -15,6 +15,7 @@
     "@microsoft/fetch-event-source": "^2.0.1",
     "@pinecone-database/pinecone": "^0.0.10",
     "@radix-ui/react-avatar": "^1.0.2",
+    "@radix-ui/react-switch": "^1.0.2",
     "@types/node": "18.15.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
