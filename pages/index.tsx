@@ -4,23 +4,21 @@ import dynamic from 'next/dynamic';
 
 import styles from '@/styles/Home.module.scss';
 
-const Stage = dynamic(() => import('@/components/Stage/Stage'), { ssr: false });
-const Console = dynamic(() => import('@/components/Console/Console'), { ssr: false });
-const Actions = dynamic(() => import('@/components/Actions/Actions'), { ssr: false });
+import Console from '@/components/Console/Console';
+import Actions from '@/components/Actions/Actions';
 
 export default function Home() {
   return (
     <>
       <Head>
-        <title>DND</title>
+        <title>Roadside</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='icon' href='/favicon.ico' />
+        <link rel='icon' href='/favicon.png' />
       </Head>
 
       <main className={styles.main}>
-        <Stage />
-        <Actions />
         <Console />
+        <Actions />
       </main>
     </>
   );

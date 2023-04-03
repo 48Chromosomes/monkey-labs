@@ -3,63 +3,23 @@ import { persist } from 'zustand/middleware';
 
 import { ChatLog, AppStoreInterface } from '@/types';
 
-import { sendPrompt } from '@/utilities/prompt';
-import { sendImagePrompt } from '@/utilities/midjourney';
-import { splitParagraph } from '@/utilities/splitNarration';
-
-import { PROMPTS } from '@/consts/prompts';
+const initialChatLog: ChatLog = {
+  role: 'apiMessage',
+  content: 'Hi, what would you like to learn about Roadside?',
+  silent: false,
+  sourceDocs: [],
+};
 
 export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () => any) => ({
-  background: '',
-  character: null,
-  chatLogs: [],
-  currentNarration: '',
-  narrationList: [],
-  waitingForResponse: false,
-  resetGame: () =>
+  chatLogs: [initialChatLog],
+  resetChat: () =>
     set({
-      background: '',
-      character: null,
-      chatLogs: [],
-      currentNarration: '',
-      narrationList: [],
-      waitingForResponse: false,
+      chatLogs: [initialChatLog],
     }),
-  sendPrompt: async ({ prompt }: { prompt: string }) => {
-    const { chatLogs, getImage } = get();
-
-    const isCharacterCreatorPrompt = prompt === PROMPTS.GENERATE_CHARACTER;
-
-    chatLogs.push({
-      role: 'user',
-      content: prompt,
-      silent: true,
-    });
-
-    set(() => ({
-      chatLogs,
-      waitingForResponse: true,
-    }));
-
-    const response: ChatLog = await sendPrompt({ chatLogs });
-
-    response.silent = isCharacterCreatorPrompt ? true : false;
-
-    if (!response.silent) getImage({ prompt: JSON.parse(response.content).visual_description });
-
+  setChatLogs: ({ role, content, silent = false, sourceDocs = [] }: ChatLog) => {
     set((state: any) => ({
-      chatLogs: [...state.chatLogs, response],
-      waitingForResponse: false,
-      ...(!response.silent && {
-        currentNarration: JSON.parse(response.content).story,
-        narrationList: splitParagraph({ paragraph: JSON.parse(response.content).story }),
-      }),
-      ...(isCharacterCreatorPrompt && { character: JSON.parse(response.content) }),
+      chatLogs: [...state.chatLogs, { role, content, silent, sourceDocs }],
     }));
-  },
-  getImage: async ({ prompt }: { prompt: string }) => {
-    const image = await sendImagePrompt({ prompt });
-    set((state: AppStoreInterface) => ({ ...state, background: image }));
   },
 });
 

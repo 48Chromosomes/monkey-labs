@@ -1,34 +1,38 @@
 .consoleContainer {
-  display: flex;
-  flex-direction: column;
   position: relative;
-  width: 70%;
-  height: 100vh;
+  height: 50vh;
   background-color: #f6f6f6;
   padding-bottom: 4.5em;
-  flex-grow: 1;
-  width: 1000px;
+  width: 800px;
+  height: 90vh;
+  border-radius: 8px;
+  margin: 0 auto;
 
   .chatLogContainer {
     display: flex;
     flex-direction: column;
+    align-items: center;
     position: relative;
     overflow-y: scroll;
     padding: 1rem 1rem 2rem 1rem;
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
-    height: 100vh;
+    height: 85vh;
 
     .log {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+      flex-direction: row;
       padding: 1rem;
       background-color: #fff;
       border-radius: 0.5rem;
       box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.1);
       margin-bottom: 1em;
-      font-size: 1rem;
-      line-height: 1.5;
+      width: 100%;
+
+      .logText {
+        padding: 0.5em 0 0 1em;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
 
       pre {
         white-space: pre-wrap;
@@ -40,17 +44,6 @@
         margin-bottom: 0;
       }
     }
-
-    .characterCount {
-      position: absolute;
-      bottom: 1em;
-      right: 1em;
-      opacity: 0.3;
-    }
-  }
-
-  .loader {
-    margin: 0 auto;
   }
 
   .form {
