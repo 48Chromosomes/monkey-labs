@@ -27,7 +27,7 @@ Answer in Markdown:`,
 
 export const makeChain = (vectorstore: PineconeStore, onTokenStream?: (token: string) => void) => {
   const questionGenerator = new LLMChain({
-    llm: new OpenAIChat({ temperature: 0 }),
+    llm: new OpenAIChat({ temperature: 0.2 }),
     prompt: CONDENSE_PROMPT,
   });
 
