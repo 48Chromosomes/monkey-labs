@@ -3,7 +3,14 @@ import { OpenAIEmbeddings } from 'langchain/embeddings';
 import { PineconeStore } from 'langchain/vectorstores';
 import { initPinecone } from '../utilities/pinecone-client.js';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '../config/pinecone.js';
-import { DirectoryLoader, NotionLoader } from 'langchain/document_loaders';
+import {
+  DirectoryLoader,
+  JSONLoader,
+  JSONLinesLoader,
+  TextLoader,
+  CSVLoader,
+  PDFLoader,
+} from 'langchain/document_loaders';
 
 /* Name of directory to retrieve your files from */
 const filePath = 'docs';
@@ -12,12 +19,13 @@ export const run = async () => {
   try {
     const pinecone = await initPinecone();
 
-    /*const directoryLoader = new DirectoryLoader(filePath, {
-      '.md': (path) => new NotionLoader(path),
+    const loader = new DirectoryLoader(filePath, {
+      '.pdf': (path) => new PDFLoader(path),
       '.json': (path) => new JSONLoader(path),
-    });*/
-
-    const loader = new NotionLoader(filePath);
+      '.jsonl': (path) => new JSONLinesLoader(path, '/html'),
+      '.txt': (path) => new TextLoader(path),
+      '.csv': (path) => new CSVLoader(path, 'text'),
+    });
 
     const rawDocs = await loader.load();
 
