@@ -5,7 +5,7 @@ import { ChatLog, AppStoreInterface } from '@/types';
 
 const initialChatLog: ChatLog = {
   role: 'apiMessage',
-  content: 'Hi, what would you like to learn about Roadside?',
+  content: 'Hi, what would you like to talk about?',
   silent: false,
   sourceDocs: [],
 };
