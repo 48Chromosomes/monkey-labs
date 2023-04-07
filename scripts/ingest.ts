@@ -1,53 +1,32 @@
-import { MarkdownTextSplitter } from 'langchain/text_splitter';
 import { OpenAIEmbeddings } from 'langchain/embeddings';
 import { PineconeStore } from 'langchain/vectorstores';
 import { initPinecone } from '../utilities/pinecone-client.js';
-import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '../config/pinecone.js';
-import {
-  DirectoryLoader,
-  JSONLoader,
-  JSONLinesLoader,
-  TextLoader,
-  CSVLoader,
-  PDFLoader,
-} from 'langchain/document_loaders';
+import { getInitialUserPrompts } from './helpers.js';
 
-/* Name of directory to retrieve your files from */
-const filePath = 'docs';
+import fs from 'fs';
 
 export const run = async () => {
   try {
     const pinecone = await initPinecone();
+    const promptAnswers = await getInitialUserPrompts();
+    const { index, namespace, loaderFunction } = promptAnswers;
 
-    const loader = new DirectoryLoader(filePath, {
-      '.pdf': (path) => new PDFLoader(path),
-      '.json': (path) => new JSONLoader(path),
-      '.jsonl': (path) => new JSONLinesLoader(path, '/html'),
-      '.txt': (path) => new TextLoader(path),
-      '.csv': (path) => new CSVLoader(path, 'text'),
-    });
+    const docs = await loaderFunction();
 
-    const rawDocs = await loader.load();
+    fs.writeFileSync('tmp/docs.txt', JSON.stringify(docs));
 
-    const textSplitter = new MarkdownTextSplitter({
-      chunkSize: 1000,
-      chunkOverlap: 200,
-    });
+    console.log(`${docs.length} documents created...`);
 
-    const docs = await textSplitter.splitDocuments(rawDocs);
-
-    console.log('split docs', docs);
-
-    console.log('creating vector store...');
+    console.log('Creating vector store...');
 
     const embeddings = new OpenAIEmbeddings();
-    const index = pinecone.Index(PINECONE_INDEX_NAME);
+    const pineconeIndex = pinecone.Index(index);
 
-    console.log('ingesting data...');
+    console.log('Ingesting data...');
 
     await PineconeStore.fromDocuments(docs, embeddings, {
-      pineconeIndex: index,
-      namespace: PINECONE_NAME_SPACE,
+      pineconeIndex,
+      namespace: namespace,
       textKey: 'text',
     });
   } catch (error) {
@@ -58,5 +37,5 @@ export const run = async () => {
 
 (async () => {
   await run();
-  console.log('ingestion complete');
+  console.log('Ingestion complete');
 })();

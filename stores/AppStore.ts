@@ -13,6 +13,7 @@ const initialChatLog: ChatLog = {
 export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () => any) => ({
   chatLogs: [initialChatLog],
   listenerActive: false,
+  currentIndex: '',
   resetChat: () =>
     set({
       chatLogs: [initialChatLog],
@@ -23,6 +24,7 @@ export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () =>
     }));
   },
   toggleListener: () => set((state: any) => ({ listenerActive: !state.listenerActive })),
+  setCurrentIndex: (index: string) => set({ currentIndex: index }),
 });
 
 export const useAppStore = create(
