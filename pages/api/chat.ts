@@ -1,14 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { OpenAIEmbeddings } from 'langchain/embeddings';
 import { PineconeStore } from 'langchain/vectorstores';
-import { makeChain } from '@/utilities/makechain';
-import { initPinecone } from '@/utilities/pinecone-client';
+import { makeChain } from '@/utilities/pinecone/makechain';
+import { initPinecone } from '@/utilities/pinecone/pinecone-client';
 
 import { ChatLog } from '@/types';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const pinecone = await initPinecone();
-  const { question, chatLogs, currentIndex } = req.body;
+  const { question, chatLogs, currentIndex, currentRole } = req.body;
 
   const history = chatLogs.map((log: ChatLog) => log.content);
 
@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   sendData(JSON.stringify({ data: '' }));
 
-  const chain = makeChain(vectorStore, (token: string) => {
+  const chain = makeChain(vectorStore, currentRole, (token: string) => {
     sendData(JSON.stringify({ data: token }));
   });
 

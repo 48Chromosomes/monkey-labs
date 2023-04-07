@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { initPinecone } from '@/utilities/pinecone-client';
+import { initPinecone } from '@/utilities/pinecone/pinecone-client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const pinecone = await initPinecone();

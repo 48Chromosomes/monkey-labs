@@ -5,6 +5,8 @@ export type ChatLog = {
   sourceDocs?: Document[];
 };
 
+export type Role = 'ASSISTANT' | 'SOFTWARE_ENGINEER';
+
 export type AppStoreInterface = (
   set: (arg0: any) => void,
   get: () => any,
@@ -12,8 +14,10 @@ export type AppStoreInterface = (
   chatLogs: ChatLog[];
   listenerActive: boolean;
   currentIndex: string;
+  currentRole: Role;
   resetChat: () => void;
   setChatLogs: ({ role, content, silent }: ChatLog) => void;
   toggleListener: () => void;
   setCurrentIndex: (index: string) => void;
+  setCurrentRole: (role: Role) => void;
 };

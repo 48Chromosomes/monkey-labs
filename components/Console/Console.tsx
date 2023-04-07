@@ -11,7 +11,7 @@ import ChatAvatar from '@/components/Console/Avatar/Avatar';
 import Listener from '@/components/Console/Listener/Listener';
 
 export default function Console() {
-  const { chatLogs, setChatLogs, listenerActive, currentIndex } = useAppStore();
+  const { chatLogs, setChatLogs, listenerActive, currentIndex, currentRole } = useAppStore();
   const messageListRef = useRef<HTMLDivElement>(null);
   const textInputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -29,7 +29,7 @@ export default function Console() {
     if (messageListRef.current) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
-  }, [chatLogs]);
+  }, [chatLogs, messageStream]);
 
   const onSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -55,6 +55,7 @@ export default function Console() {
           question,
           chatLogs,
           currentIndex,
+          currentRole,
         }),
         signal: ctrl.signal,
         onmessage: (event) => {

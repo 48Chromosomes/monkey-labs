@@ -1,6 +1,6 @@
 import { OpenAIEmbeddings } from 'langchain/embeddings';
 import { PineconeStore } from 'langchain/vectorstores';
-import { initPinecone } from '../utilities/pinecone-client.js';
+import { initPinecone } from '../utilities/pinecone/pinecone-client.js';
 import { getInitialUserPrompts } from './helpers.js';
 
 import fs from 'fs';

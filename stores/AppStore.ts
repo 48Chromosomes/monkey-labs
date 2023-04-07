@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { ChatLog, AppStoreInterface } from '@/types';
+import { ChatLog, Role, AppStoreInterface } from '@/types';
 
 const initialChatLog: ChatLog = {
   role: 'apiMessage',
@@ -14,6 +14,7 @@ export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () =>
   chatLogs: [initialChatLog],
   listenerActive: false,
   currentIndex: '',
+  currentRole: 'ASSISTANT',
   resetChat: () =>
     set({
       chatLogs: [initialChatLog],
@@ -25,6 +26,7 @@ export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () =>
   },
   toggleListener: () => set((state: any) => ({ listenerActive: !state.listenerActive })),
   setCurrentIndex: (index: string) => set({ currentIndex: index }),
+  setCurrentRole: (role: Role) => set({ currentRole: role }),
 });
 
 export const useAppStore = create(
