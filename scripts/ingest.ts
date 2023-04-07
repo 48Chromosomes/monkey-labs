@@ -13,8 +13,6 @@ export const run = async () => {
 
     const docs = await loaderFunction();
 
-    fs.writeFileSync('tmp/docs.txt', JSON.stringify(docs));
-
     console.log(`${docs.length} documents created...`);
 
     console.log('Creating vector store...');
