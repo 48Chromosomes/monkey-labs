@@ -11,7 +11,7 @@ import ChatAvatar from '@/components/Console/Avatar/Avatar';
 import Listener from '@/components/Console/Listener/Listener';
 
 export default function Console() {
-  const { chatLogs, setChatLogs, listenerActive } = useAppStore();
+  const { chatLogs, setChatLogs, listenerActive, currentIndex } = useAppStore();
   const messageListRef = useRef<HTMLDivElement>(null);
   const textInputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -54,6 +54,7 @@ export default function Console() {
         body: JSON.stringify({
           question,
           chatLogs,
+          currentIndex,
         }),
         signal: ctrl.signal,
         onmessage: (event) => {

@@ -3,13 +3,12 @@ import { OpenAIEmbeddings } from 'langchain/embeddings';
 import { PineconeStore } from 'langchain/vectorstores';
 import { makeChain } from '@/utilities/makechain';
 import { initPinecone } from '@/utilities/pinecone-client';
-import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
 
 import { ChatLog } from '@/types';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const pinecone = await initPinecone();
-  const { question, chatLogs } = req.body;
+  const { question, chatLogs, currentIndex } = req.body;
 
   const history = chatLogs.map((log: ChatLog) => log.content);
 
@@ -20,12 +19,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // OpenAI recommends replacing newlines with spaces for best results
   const sanitizedQuestion = question.trim().replaceAll('\n', ' ');
 
-  const index = pinecone.Index(PINECONE_INDEX_NAME);
+  const index = pinecone.Index(currentIndex);
 
   const vectorStore = await PineconeStore.fromExistingIndex(new OpenAIEmbeddings({}), {
     pineconeIndex: index,
     textKey: 'text',
-    namespace: PINECONE_NAME_SPACE,
+    namespace: 'default',
   });
 
   res.writeHead(200, {
