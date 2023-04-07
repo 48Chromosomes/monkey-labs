@@ -1,0 +1,37 @@
+.button {
+  align-items: center;
+  background-color: rgba(154, 154, 154, 0.26);
+  border: none;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #ddd;
+  cursor: pointer;
+  display: flex;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  justify-content: center;
+  line-height: 28px;
+  max-width: 100%;
+  padding: 6px 12px;
+  text-decoration: none;
+  transition: all 0.2s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+  font-weight: 100;
+}
+
+.button:active,
+.button:hover {
+  outline: 0;
+}
+
+.button:hover {
+  background-color: rgba(154, 154, 154, 0.4);
+}
+
+.button:disabled {
+  background-color: darken(rgba(154, 154, 154, 0.26), 30%);
+  color: darken(#ddd, 30%);
+}
