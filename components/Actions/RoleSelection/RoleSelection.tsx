@@ -11,7 +11,7 @@ import InfoCard from '@/components/InfoCard/InfoCard';
 
 export default function RoleSelection() {
   const { resetChat, currentRole, setCurrentRole, roles, getRoles } = useAppStore();
-  const { label, description, temperature } = currentRole;
+  const { label, description } = currentRole;
 
   useEffect(() => {
     getRoles();
@@ -46,7 +46,7 @@ export default function RoleSelection() {
           <DropdownMenu.Content side='bottom' className={styles.dropdownMenuContent} sideOffset={5}>
             <DropdownMenu.RadioGroup value={currentRole.id} onValueChange={selectRole}>
               {roles.map((role: Role, index: number) => (
-                <DropdownMenu.RadioItem key={index} className={styles.dropdownMenuItem} value={role.label}>
+                <DropdownMenu.RadioItem key={index} className={styles.dropdownMenuItem} value={role.id}>
                   <DropdownMenu.ItemIndicator className={styles.dropdownMenuItemIndicator}>
                     <CheckIcon />
                   </DropdownMenu.ItemIndicator>
