@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
+import ReactMarkdown from 'react-markdown';
 
 import styles from './Console.module.scss';
 
@@ -99,7 +100,9 @@ export default function Console() {
             chatLogs.map((log: ChatLog, index: number) => (
               <div key={index} className={styles.log}>
                 <ChatAvatar type={log.role} />
-                <div className={styles.logText}>{log.content}</div>
+                <div className={styles.logText}>
+                  <ReactMarkdown linkTarget='_blank'>{log.content}</ReactMarkdown>
+                </div>
               </div>
             ))}
 
