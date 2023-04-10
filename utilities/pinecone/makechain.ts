@@ -9,7 +9,7 @@ import { Role } from '@/types';
 
 export const makeChain = (vectorstore: PineconeStore, role: Role, onTokenStream?: (token: string) => void) => {
   const questionGenerator = new LLMChain({
-    llm: new OpenAIChat({ temperature: 0.2 }),
+    llm: new OpenAIChat({ temperature: 0.8 }),
     prompt: CONDENSE_PROMPT,
   });
 
@@ -17,7 +17,7 @@ export const makeChain = (vectorstore: PineconeStore, role: Role, onTokenStream?
 
   const docChain = loadQAChain(
     new OpenAIChat({
-      temperature: 0.2,
+      temperature: 0.8,
       modelName: 'gpt-3.5-turbo',
       streaming: Boolean(onTokenStream),
       callbackManager: onTokenStream

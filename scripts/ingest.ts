@@ -3,8 +3,6 @@ import { PineconeStore } from 'langchain/vectorstores';
 import { initPinecone } from '../utilities/pinecone/pinecone-client.js';
 import { getInitialUserPrompts } from './helpers.js';
 
-import fs from 'fs';
-
 export const run = async () => {
   try {
     const pinecone = await initPinecone();
@@ -17,12 +15,11 @@ export const run = async () => {
 
     console.log('Creating vector store...');
 
-    const embeddings = new OpenAIEmbeddings();
     const pineconeIndex = pinecone.Index(index);
 
     console.log('Ingesting data...');
 
-    await PineconeStore.fromDocuments(docs, embeddings, {
+    await PineconeStore.fromDocuments(docs, new OpenAIEmbeddings(), {
       pineconeIndex,
       namespace: namespace,
       textKey: 'text',

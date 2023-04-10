@@ -7,7 +7,7 @@ export type ChatLog = {
   sourceDocs?: Document[];
 };
 
-export type Role = 'ASSISTANT' | 'SOFTWARE_ENGINEER';
+export type Role = 'ASSISTANT' | 'SOFTWARE_ENGINEER' | 'TWEETER';
 
 export type AppStoreInterface = (
   set: (arg0: any) => void,

@@ -31,3 +31,15 @@ export const SOFTWARE_ENGINEER_PROPMT = PromptTemplate.fromTemplate(
     =========
     Answer in Markdown:`,
 );
+
+export const TWEETER_PROPMT = PromptTemplate.fromTemplate(
+  `You are a social media expert. You are given educational materials and a question. Provide a conversational answer based on the context provided as if you were writing Tweets for Twitter.
+      You should only provide hyperlinks that reference the context below.
+      Use your expertise on the given educational materials to create a tweet on the subject based on the question.
+      
+      Question: {question}
+      =========
+      {context}
+      =========
+      Answer in Markdown:`,
+);

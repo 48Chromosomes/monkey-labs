@@ -9,10 +9,11 @@ import { Role } from '@/types';
 
 export default function RoleSelection() {
   const { resetChat, currentRole, setCurrentRole } = useAppStore();
-  const ROLES: Role[] = ['ASSISTANT', 'SOFTWARE_ENGINEER'];
+  const ROLES: Role[] = ['ASSISTANT', 'SOFTWARE_ENGINEER', 'TWEETER'];
   const roleLabels: { [key in Role]: string } = {
     ASSISTANT: 'Assistant',
     SOFTWARE_ENGINEER: 'Software Engineer',
+    TWEETER: 'Tweeter',
   };
 
   const selectIndex = (value: any) => {
