@@ -112,7 +112,7 @@ export default function Console() {
 
                   {log.sourceDocs && log.sourceDocs?.length > 0 && (
                     <div className={styles.sourceDocs}>
-                      <Accordion.Root type='single' defaultValue='source_docs' collapsible>
+                      <Accordion.Root type='single' collapsible>
                         <Accordion.Item className='AccordionItem' value='source_docs' data-state='closed'>
                           <Accordion.Trigger className={styles.sourceDocsAccordionTrigger}>
                             Source Docs <ChevronDownIcon />
