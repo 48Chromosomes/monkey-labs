@@ -1,3 +1,5 @@
+import { Document } from 'langchain/document';
+
 export type ChatLog = {
   role: 'apiMessage' | 'userMessage';
   content: string;

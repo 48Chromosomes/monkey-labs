@@ -4,6 +4,7 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import ReactMarkdown from 'react-markdown';
+import { Document } from 'langchain/document';
 
 import styles from './Console.module.scss';
 
