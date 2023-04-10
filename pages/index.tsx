@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import dynamic from 'next/dynamic';
 
 import styles from '@/styles/Home.module.scss';
 
@@ -11,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Roadside</title>
+        <title>MonkeyLabs</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.png' />
       </Head>
