@@ -1,0 +1,31 @@
+.infoCardContainer {
+  display: inline-block;
+  margin-left: 0.5em;
+
+  .hoverCardTrigger {
+    opacity: 0.6;
+  }
+}
+
+.hoverCardContent {
+  border-radius: 6px;
+  padding: 20px;
+  width: 250px;
+  background-color: white;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  text-align: center;
+  font-size: 0.8em;
+  margin-top: 20px;
+
+  &:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid white;
+    position: relative;
+    top: -40px;
+    left: calc(50% - 6px);
+  }
+}
