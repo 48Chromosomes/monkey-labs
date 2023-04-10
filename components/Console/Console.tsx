@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
+import * as Accordion from '@radix-ui/react-accordion';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
 import ReactMarkdown from 'react-markdown';
 
 import styles from './Console.module.scss';
@@ -106,6 +108,26 @@ export default function Console() {
                 <ChatAvatar type={log.role} />
                 <div className={styles.logText}>
                   <ReactMarkdown linkTarget='_blank'>{log.content}</ReactMarkdown>
+
+                  {log.sourceDocs && log.sourceDocs?.length > 0 && (
+                    <div className={styles.sourceDocs}>
+                      <Accordion.Root type='single' defaultValue='source_docs' collapsible>
+                        <Accordion.Item className='AccordionItem' value='source_docs' data-state='closed'>
+                          <Accordion.Trigger className={styles.sourceDocsAccordionTrigger}>
+                            Source Docs <ChevronDownIcon />
+                          </Accordion.Trigger>
+                          <Accordion.Content>
+                            {log.sourceDocs.map((doc, index) => (
+                              <div key={index} className={styles.sourceDocsList}>
+                                <div className={styles.sourceDocsListSource}>{doc.metadata.source}</div>
+                                <ReactMarkdown linkTarget='_blank'>{doc.pageContent}</ReactMarkdown>
+                              </div>
+                            ))}
+                          </Accordion.Content>
+                        </Accordion.Item>
+                      </Accordion.Root>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -113,7 +135,9 @@ export default function Console() {
           {messageStream.length > 0 && (
             <div className={styles.log}>
               <ChatAvatar type='apiMessage' />
-              <div className={styles.logText}>{messageStream}</div>
+              <div className={styles.logText}>
+                <ReactMarkdown linkTarget='_blank'>{messageStream}</ReactMarkdown>
+              </div>
             </div>
           )}
 

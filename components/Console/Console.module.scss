@@ -38,10 +38,45 @@
         white-space: pre-wrap;
         border-radius: 0.5rem;
         width: 100%;
+        margin: 2em 0;
+        background: #eee;
+        padding: 1em;
       }
 
       &:last-child {
         margin-bottom: 0;
+      }
+
+      .sourceDocs {
+        border-top: 1px solid rgb(214, 214, 214);
+        margin-top: 1em;
+        padding-top: 1em;
+
+        .sourceDocsAccordionTrigger {
+          background: none;
+          border: none;
+          display: block;
+          width: 100%;
+          text-align: left;
+          font-size: 0.8em;
+
+          svg {
+            float: right;
+          }
+        }
+
+        .sourceDocsList {
+          font-size: 0.8em;
+          margin-top: 1em;
+
+          .sourceDocsListSource {
+            background: #2d2d2d;
+            border-radius: 3px;
+            padding: 0.3em 1em;
+            color: rgb(214, 214, 214);
+            margin: 2em 0 1em;
+          }
+        }
       }
     }
   }
