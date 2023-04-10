@@ -32,10 +32,14 @@ export default function Console() {
     }
   }, [chatLogs, messageStream]);
 
-  const onSubmit = (event: React.SyntheticEvent) => {
-    event.preventDefault();
+  const onSubmit = (event?: React.SyntheticEvent | undefined) => {
+    event?.preventDefault();
 
     const question = query.trim();
+
+    if (question.length === 0) {
+      return;
+    }
 
     setLoading(true);
     setError(null);
@@ -90,7 +94,7 @@ export default function Console() {
 
   const onListenerBegin = () => setQuery('');
 
-  const onListenerComplete = () => formRef.current?.submit();
+  const onListenerComplete = () => setTimeout(onSubmit, 1000);
 
   return (
     <>
