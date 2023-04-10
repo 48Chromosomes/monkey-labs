@@ -9,7 +9,7 @@ export default function InfoCard({ children }: { children: React.ReactNode }) {
     <div className={styles.infoCardContainer}>
       <HoverCard.Root>
         <HoverCard.Trigger className={styles.hoverCardTrigger} asChild>
-          <InfoCircledIcon />
+          <InfoCircledIcon width='16' height='16' />
         </HoverCard.Trigger>
 
         <HoverCard.Portal>

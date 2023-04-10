@@ -4,16 +4,16 @@ import { PineconeStore } from 'langchain/vectorstores';
 import { CallbackManager } from 'langchain/callbacks';
 
 import { CONDENSE_PROMPT } from '@/templates/prompts';
-import { prompts } from '@/utilities/pinecone/consts';
+
 import { Role } from '@/types';
 
 export const makeChain = (vectorstore: PineconeStore, role: Role, onTokenStream?: (token: string) => void) => {
+  const { prompt, temperature } = role;
+
   const questionGenerator = new LLMChain({
-    llm: new OpenAIChat({ temperature: 0.8 }),
+    llm: new OpenAIChat({ temperature }),
     prompt: CONDENSE_PROMPT,
   });
-
-  const prompt = prompts[role];
 
   const docChain = loadQAChain(
     new OpenAIChat({
