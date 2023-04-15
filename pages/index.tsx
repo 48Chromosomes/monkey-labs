@@ -1,9 +1,12 @@
 import React from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 
 import styles from '@/styles/Home.module.scss';
 
-import Console from '@/components/Console/Console';
+const Console = dynamic(() => import('@/components/Console/Console'), {
+  ssr: false,
+});
 import Actions from '@/components/Actions/Actions';
 
 export default function Home() {
