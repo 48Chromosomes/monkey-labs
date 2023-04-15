@@ -1,14 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { OpenAIEmbeddings } from 'langchain/embeddings';
-import { PineconeStore } from 'langchain/vectorstores';
 import { makeChain } from '@/utilities/pinecone/makechain';
-import { initPinecone } from '@/utilities/pinecone/pinecone-client';
+import { PineconeStore, VectorStore } from 'langchain/vectorstores';
 
+import { getVectorStore } from '@/utilities/api/getVectorStore';
 import { ChatLog } from '@/types';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const pinecone = await initPinecone();
-  const { question, chatLogs, currentIndex, currentRole } = req.body;
+  const { question, chatLogs, currentIndex, currentRole, currentVectorStore } = req.body;
 
   const history = chatLogs.map((log: ChatLog) => log.content);
 
@@ -19,13 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // OpenAI recommends replacing newlines with spaces for best results
   const sanitizedQuestion = question.trim().replaceAll('\n', ' ');
 
-  const index = pinecone.Index(currentIndex);
-
-  const vectorStore = await PineconeStore.fromExistingIndex(new OpenAIEmbeddings({}), {
-    pineconeIndex: index,
-    textKey: 'text',
-    namespace: 'default',
-  });
+  const vectorStore: PineconeStore | VectorStore = await getVectorStore({ currentIndex, currentVectorStore });
 
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',

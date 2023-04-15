@@ -29,6 +29,7 @@
     "eslint-config-next": "13.2.4",
     "fs": "^0.0.1-security",
     "langchain": "^0.0.44",
+    "langchain": "^0.0.56",
     "next": "13.2.4",
     "nodemon": "^2.0.21",
     "openai": "^3.2.1",

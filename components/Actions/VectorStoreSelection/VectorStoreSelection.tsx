@@ -2,37 +2,31 @@ import React, { useEffect, useState, MouseEventHandler } from 'react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { HamburgerMenuIcon, CheckIcon } from '@radix-ui/react-icons';
 
-import styles from './ModelSelection.module.scss';
+import styles from './VectorStoreSelection.module.scss';
 
 import { useAppStore } from '@/stores/AppStore';
-import { getListIndexes } from '@/utilities/api/getListIndexes';
+import { AllowedVectorStores } from '@/types';
 
 export default function ModelSelection() {
-  const { resetChat, currentIndex, setCurrentIndex, currentVectorStore } = useAppStore();
-  const [indexes, setIndexes] = useState<string[]>([]);
+  const { resetChat, currentVectorStore, setCurrentVectorStore } = useAppStore();
+  const VECTOR_STORES: AllowedVectorStores[] = ['Local', 'Pinecone'];
 
   useEffect(() => {
-    (async () => {
-      const indexes = await getListIndexes({ currentVectorStore });
-      console.log(indexes);
-      setCurrentIndex(indexes[0]);
-      setIndexes([...indexes]);
-      if (!currentIndex) setCurrentIndex(indexes[0]);
-    })();
-  }, [currentIndex, setCurrentIndex, currentVectorStore]);
+    if (!currentVectorStore) setCurrentVectorStore(VECTOR_STORES[0]);
+  }, []);
 
   const selectIndex: (value: string) => void = (value) => {
-    if (value !== currentIndex) {
-      setCurrentIndex(value);
+    if (value !== currentVectorStore) {
+      setCurrentVectorStore(value as AllowedVectorStores);
       resetChat();
     }
   };
 
   return (
-    <div className={styles.indexesContainer}>
-      <div className={styles.currentIndexLabel}>
-        <span>Current model</span>
-        {currentIndex}
+    <div className={styles.vectorStoreContainer}>
+      <div className={styles.currentVectorStoreLabel}>
+        <span>Current vector store</span>
+        {currentVectorStore}
       </div>
 
       <DropdownMenu.Root>
@@ -44,13 +38,13 @@ export default function ModelSelection() {
 
         <DropdownMenu.Portal>
           <DropdownMenu.Content side='bottom' className={styles.dropdownMenuContent} sideOffset={5}>
-            <DropdownMenu.RadioGroup value={currentIndex} onValueChange={selectIndex}>
-              {indexes.map((indexName, index) => (
-                <DropdownMenu.RadioItem key={index} className={styles.dropdownMenuItem} value={indexName}>
+            <DropdownMenu.RadioGroup value={currentVectorStore} onValueChange={selectIndex}>
+              {VECTOR_STORES.map((vectorStore, index) => (
+                <DropdownMenu.RadioItem key={index} className={styles.dropdownMenuItem} value={vectorStore}>
                   <DropdownMenu.ItemIndicator className={styles.dropdownMenuItemIndicator}>
                     <CheckIcon />
                   </DropdownMenu.ItemIndicator>
-                  {indexName}
+                  {vectorStore}
                 </DropdownMenu.RadioItem>
               ))}
             </DropdownMenu.RadioGroup>

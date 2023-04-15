@@ -9,13 +9,14 @@ export type ChatLog = {
 };
 
 export type AllowedRoles = 'ASSISTANT' | 'SOFTWARE_ENGINEER' | 'TWEETER' | '-';
+export type AllowedVectorStores = 'Pinecone' | 'Local';
 
 export type Role = {
   id: AllowedRoles;
   label: string;
   description?: string;
-  temperature?: number;
-  prompt?: PromptTemplate;
+  temperature: number;
+  prompt: string;
 };
 
 export type AppStoreInterface = (
@@ -25,6 +26,7 @@ export type AppStoreInterface = (
   chatLogs: ChatLog[];
   listenerActive: boolean;
   currentIndex: string;
+  currentVectorStore: AllowedVectorStores;
   currentRole: Role;
   roles: Role[];
   resetChat: () => void;
@@ -33,4 +35,9 @@ export type AppStoreInterface = (
   setCurrentIndex: (index: string) => void;
   setCurrentRole: ({ roleId }: { roleId: AllowedRoles }) => void;
   getRoles: () => Promise<void>;
+  setCurrentVectorStore: (vectorStore: AllowedVectorStores) => void;
+};
+
+export type Prompts = {
+  [key: string]: PromptTemplate;
 };

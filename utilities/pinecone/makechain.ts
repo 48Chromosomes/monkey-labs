@@ -1,13 +1,18 @@
 import { OpenAIChat } from 'langchain/llms';
 import { LLMChain, ChatVectorDBQAChain, loadQAChain } from 'langchain/chains';
-import { PineconeStore } from 'langchain/vectorstores';
+import { PineconeStore, VectorStore } from 'langchain/vectorstores';
 import { CallbackManager } from 'langchain/callbacks';
+import { PromptTemplate } from 'langchain/prompts';
 
-import { CONDENSE_PROMPT } from '@/templates/prompts';
+import { CONDENSE_PROMPT, PROMPTS } from '@/templates/prompts';
 
 import { Role } from '@/types';
 
-export const makeChain = (vectorstore: PineconeStore, role: Role, onTokenStream?: (token: string) => void) => {
+export const makeChain = (
+  vectorstore: PineconeStore | VectorStore,
+  role: Role,
+  onTokenStream?: (token: string) => void,
+) => {
   const { prompt, temperature } = role;
 
   const questionGenerator = new LLMChain({
@@ -17,7 +22,7 @@ export const makeChain = (vectorstore: PineconeStore, role: Role, onTokenStream?
 
   const docChain = loadQAChain(
     new OpenAIChat({
-      temperature: 0.8,
+      temperature,
       modelName: 'gpt-3.5-turbo',
       streaming: Boolean(onTokenStream),
       callbackManager: onTokenStream
@@ -28,7 +33,7 @@ export const makeChain = (vectorstore: PineconeStore, role: Role, onTokenStream?
           })
         : undefined,
     }),
-    { prompt },
+    { prompt: PROMPTS[prompt] },
   );
 
   return new ChatVectorDBQAChain({

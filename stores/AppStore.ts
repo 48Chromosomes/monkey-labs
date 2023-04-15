@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { ChatLog, Role, AppStoreInterface, AllowedRoles } from '@/types';
+import { ChatLog, Role, AppStoreInterface, AllowedRoles, AllowedVectorStores } from '@/types';
 import { getRoles } from '@/utilities/api/getRoles';
 
 const initialChatLog: ChatLog = {
@@ -14,6 +14,8 @@ const initialChatLog: ChatLog = {
 const initialCurrentRole: Role = {
   id: '-',
   label: '-',
+  prompt: 'QA_PROPMT',
+  temperature: 0,
 };
 
 export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () => any) => ({
@@ -21,6 +23,7 @@ export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () =>
   listenerActive: false,
   currentIndex: '',
   currentRole: initialCurrentRole,
+  currentVectorStore: 'Local',
   roles: [],
   resetChat: () =>
     set({
@@ -44,6 +47,7 @@ export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () =>
     const { currentRole }: { currentRole: Role } = get();
     if (currentRole == initialCurrentRole) set({ currentRole: roles[0] });
   },
+  setCurrentVectorStore: (vectorStore: AllowedVectorStores) => set({ currentVectorStore: vectorStore }),
 });
 
 export const useAppStore = create(

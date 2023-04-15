@@ -9,35 +9,22 @@ import {
   JSONLinesLoader,
   TextLoader,
   CSVLoader,
-  PDFLoader,
   NotionLoader,
 } from 'langchain/document_loaders';
 import { initPinecone } from '@/utilities/pinecone/pinecone-client';
+import fs from 'fs';
+
+import {
+  CHECK_INDEX_PROMPTS,
+  GITHUB_LOADER_PROMPTS,
+  CHECK_LOCAL_VECTOR_STORE_PROMPTS,
+  SPLITTER_OPTIONS,
+} from './consts';
 
 const filePath = 'docs';
 
 export const getGithubLoader = async () => {
-  const promptAnswers = await prompts([
-    {
-      type: 'text',
-      name: 'repo',
-      message: `Repo URL: `,
-    },
-    {
-      type: 'text',
-      name: 'branch',
-      message: `Branch: `,
-      initial: 'main',
-    },
-    {
-      type: 'toggle',
-      name: 'recursive',
-      message: `Recursive? `,
-      initial: true,
-      active: 'yes',
-      inactive: 'no',
-    },
-  ]);
+  const promptAnswers = await prompts(GITHUB_LOADER_PROMPTS);
 
   const { repo, recursive, branch } = promptAnswers;
 
@@ -49,10 +36,7 @@ export const getGithubLoader = async () => {
 
   const rawDocs: Document[] = await loader.load();
 
-  const textSplitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
-    chunkOverlap: 200,
-  });
+  const textSplitter = new RecursiveCharacterTextSplitter(SPLITTER_OPTIONS);
 
   const docs = await textSplitter.splitDocuments(rawDocs);
 
@@ -87,10 +71,7 @@ export const getDirectoryLoader = async () => {
 
   const rawDocs: Document[] = await loader.load();
 
-  const textSplitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
-    chunkOverlap: 200,
-  });
+  const textSplitter = new RecursiveCharacterTextSplitter(SPLITTER_OPTIONS);
 
   const docs = await textSplitter.splitDocuments(rawDocs);
 
@@ -102,45 +83,11 @@ export const getNotionLoader = async () => {
 
   const rawDocs = await loader.load();
 
-  const textSplitter = new MarkdownTextSplitter({
-    chunkSize: 1000,
-    chunkOverlap: 200,
-  });
+  const textSplitter = new MarkdownTextSplitter(SPLITTER_OPTIONS);
 
   const docs = await textSplitter.splitDocuments(rawDocs);
 
   return docs;
-};
-
-export const getInitialUserPrompts = async () => {
-  const promptAnswers = await prompts([
-    {
-      type: 'text',
-      name: 'index',
-      message: `Pinecone Index: `,
-    },
-    {
-      type: 'text',
-      name: 'namespace',
-      message: `Pinecone Index Namespace: `,
-      initial: 'default',
-    },
-    {
-      type: 'select',
-      name: 'loaderFunction',
-      message: 'Choose loader: ',
-      choices: [
-        { title: 'PDFLoader', value: getPDFLoader },
-        { title: 'MarkdownLoader', value: getNotionLoader },
-        { title: 'GithubRepoLoader', value: getGithubLoader },
-        { title: 'DirectoryLoader', value: getDirectoryLoader },
-      ],
-    },
-  ]);
-
-  await checkIndex(promptAnswers.index);
-
-  return promptAnswers;
 };
 
 export const checkIndex = async (indexName: string) => {
@@ -148,16 +95,7 @@ export const checkIndex = async (indexName: string) => {
   const indexesList = await pinecone.listIndexes();
 
   if (!indexesList.includes(indexName)) {
-    const promptAnswers = await prompts([
-      {
-        type: 'toggle',
-        name: 'createIndex',
-        message: `Index does not exist. Would you like to create index ${indexName}? `,
-        initial: true,
-        active: 'yes',
-        inactive: 'no',
-      },
-    ]);
+    const promptAnswers = await prompts(CHECK_INDEX_PROMPTS);
 
     const { createIndex } = promptAnswers;
 
@@ -194,4 +132,19 @@ const pollIndex = ({ indexName }: { indexName: string }) => {
   };
 
   return new Promise(executePoll);
+};
+
+export const checkLocalVectorStore = async (indexName: string) => {
+  if (fs.existsSync(`vectors/${indexName}.json`)) {
+    const promptAnswers = await prompts(CHECK_LOCAL_VECTOR_STORE_PROMPTS);
+
+    const { createIndex } = promptAnswers;
+
+    if (createIndex === 'no') {
+      console.log('Exiting...');
+      process.exit(1);
+    }
+  }
+
+  return;
 };

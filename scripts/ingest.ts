@@ -1,36 +1,24 @@
-import { OpenAIEmbeddings } from 'langchain/embeddings';
-import { PineconeStore } from 'langchain/vectorstores';
-import { initPinecone } from '../utilities/pinecone/pinecone-client.js';
-import { getInitialUserPrompts } from './helpers.js';
+import prompts from 'prompts';
+
+import { ingestMemory } from './ingestMemory';
+import { ingestPinecone } from './ingestPinecone';
 
 export const run = async () => {
-  try {
-    const pinecone = await initPinecone();
-    const promptAnswers = await getInitialUserPrompts();
-    const { index, namespace, loaderFunction } = promptAnswers;
+  const promptAnswers = await prompts([
+    {
+      type: 'select',
+      name: 'vectorStoreMethod',
+      message: 'Choose vector store: ',
+      choices: [
+        { title: 'Memory', value: ingestMemory },
+        { title: 'Pinecone', value: ingestPinecone },
+      ],
+    },
+  ]);
 
-    const docs = await loaderFunction();
+  const { vectorStoreMethod } = promptAnswers;
 
-    console.log(`${docs.length} documents created...`);
-
-    console.log('Creating vector store...');
-
-    const pineconeIndex = pinecone.Index(index);
-
-    console.log('Ingesting data...');
-
-    await PineconeStore.fromDocuments(docs, new OpenAIEmbeddings(), {
-      pineconeIndex,
-      namespace: namespace,
-      textKey: 'text',
-    });
-  } catch (error) {
-    console.log('error', error);
-    throw new Error('Failed to ingest your data');
-  }
+  vectorStoreMethod();
 };
 
-(async () => {
-  await run();
-  console.log('Ingestion complete');
-})();
+(async () => await run())();
