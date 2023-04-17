@@ -1,25 +1,18 @@
-import prompts from 'prompts';
 import { MarkdownTextSplitter, RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
-import { CustomPDFLoader } from '@/utilities/pinecone/customPDFLoader';
 import { Document } from 'langchain/document';
-import {
-  GithubRepoLoader,
-  DirectoryLoader,
-  JSONLoader,
-  JSONLinesLoader,
-  TextLoader,
-  CSVLoader,
-  NotionLoader,
-} from 'langchain/document_loaders';
-import { initPinecone } from '@/utilities/pinecone/pinecone-client';
+import { TextLoader } from 'langchain/document_loaders/fs/text';
+import { GithubRepoLoader } from 'langchain/document_loaders/web/github';
+import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
+import { JSONLoader, JSONLinesLoader } from 'langchain/document_loaders/fs/json';
+import { CSVLoader } from 'langchain/document_loaders/fs/csv';
+import { NotionLoader } from 'langchain/document_loaders/fs/notion';
+import prompts from 'prompts';
 import fs from 'fs';
 
-import {
-  CHECK_INDEX_PROMPTS,
-  GITHUB_LOADER_PROMPTS,
-  CHECK_LOCAL_VECTOR_STORE_PROMPTS,
-  SPLITTER_OPTIONS,
-} from './consts';
+import { CustomPDFLoader } from '@/utilities/pinecone/customPDFLoader';
+import { initPinecone } from '@/utilities/pinecone/pinecone-client';
+
+import { CHECK_INDEX_PROMPTS, GITHUB_LOADER_PROMPTS, SPLITTER_OPTIONS } from './consts';
 
 const filePath = 'docs';
 
@@ -50,10 +43,7 @@ export const getPDFLoader = async () => {
 
   const rawDocs: Document[] = await directoryLoader.load();
 
-  const textSplitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
-    chunkOverlap: 200,
-  });
+  const textSplitter = new RecursiveCharacterTextSplitter(SPLITTER_OPTIONS);
 
   const docs = await textSplitter.splitDocuments(rawDocs);
 
@@ -134,17 +124,54 @@ const pollIndex = ({ indexName }: { indexName: string }) => {
   return new Promise(executePoll);
 };
 
-export const checkLocalVectorStore = async (indexName: string) => {
-  if (fs.existsSync(`vectors/${indexName}.json`)) {
-    const promptAnswers = await prompts(CHECK_LOCAL_VECTOR_STORE_PROMPTS);
+export const getInitialPromptsPinecone = async () => {
+  const promptAnswers = await prompts([
+    {
+      type: 'text',
+      name: 'index',
+      message: 'Pinecone Index: ',
+    },
+    {
+      type: 'text',
+      name: 'namespace',
+      message: 'Pinecone Index Namespace: ',
+      initial: 'default',
+    },
+    {
+      type: 'select',
+      name: 'loaderFunction',
+      message: 'Choose loader: ',
+      choices: [
+        { title: 'PDFLoader', value: getPDFLoader },
+        { title: 'MarkdownLoader', value: getNotionLoader },
+        { title: 'GithubRepoLoader', value: getGithubLoader },
+        { title: 'DirectoryLoader', value: getDirectoryLoader },
+      ],
+    },
+  ]);
 
-    const { createIndex } = promptAnswers;
+  return promptAnswers;
+};
 
-    if (createIndex === 'no') {
-      console.log('Exiting...');
-      process.exit(1);
-    }
-  }
+export const getInitialPromptsHNSWLib = async () => {
+  const promptAnswers = await prompts([
+    {
+      type: 'text',
+      name: 'name',
+      message: 'Name Vector Store: ',
+    },
+    {
+      type: 'select',
+      name: 'loaderFunction',
+      message: 'Choose loader: ',
+      choices: [
+        { title: 'PDFLoader', value: getPDFLoader },
+        { title: 'MarkdownLoader', value: getNotionLoader },
+        { title: 'GithubRepoLoader', value: getGithubLoader },
+        { title: 'DirectoryLoader', value: getDirectoryLoader },
+      ],
+    },
+  ]);
 
-  return;
+  return promptAnswers;
 };

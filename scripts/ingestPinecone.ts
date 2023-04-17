@@ -1,18 +1,16 @@
-import { OpenAIEmbeddings } from 'langchain/embeddings';
-import { PineconeStore } from 'langchain/vectorstores';
-import prompts from 'prompts';
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
+import { PineconeStore } from 'langchain/vectorstores/pinecone';
 
-import { initPinecone } from '../utilities/pinecone/pinecone-client.js';
-import { checkIndex } from './helpers.js';
-import { INITAL_PROMPTS_PINECONE } from './consts';
+import { initPinecone } from '@/utilities/pinecone/pinecone-client';
+import { checkIndex, getInitialPromptsPinecone } from '@/utilities/helpers';
 
 export const ingestPinecone = async () => {
   try {
     const pinecone = await initPinecone();
-    const promptAnswers = await prompts(INITAL_PROMPTS_PINECONE);
+    const promptAnswers = await getInitialPromptsPinecone();
     const { index, namespace, loaderFunction } = promptAnswers;
 
-    await checkIndex(promptAnswers.index);
+    await checkIndex(index);
 
     const docs = await loaderFunction();
 

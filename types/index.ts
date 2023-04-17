@@ -9,7 +9,7 @@ export type ChatLog = {
 };
 
 export type AllowedRoles = 'ASSISTANT' | 'SOFTWARE_ENGINEER' | 'TWEETER' | '-';
-export type AllowedVectorStores = 'Pinecone' | 'Local';
+export type AllowedVectorStores = 'Pinecone' | 'HNSWLib';
 
 export type Role = {
   id: AllowedRoles;

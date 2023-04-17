@@ -23,7 +23,7 @@ export const AppStore: AppStoreInterface = (set: (arg0: any) => void, get: () =>
   listenerActive: false,
   currentIndex: '',
   currentRole: initialCurrentRole,
-  currentVectorStore: 'Local',
+  currentVectorStore: 'Pinecone',
   roles: [],
   resetChat: () =>
     set({

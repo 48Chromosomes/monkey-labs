@@ -1,9 +1,10 @@
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { PineconeStore } from 'langchain/vectorstores/pinecone';
+import { HNSWLib } from 'langchain/vectorstores/hnswlib';
+import { VectorStoreToolkit } from 'langchain/agents';
 
 import { initPinecone } from '@/utilities/pinecone/pinecone-client';
 import { AllowedVectorStores } from '@/types';
-import fs from 'fs';
 
 export const getVectorStore = async ({
   currentIndex,
@@ -24,11 +25,10 @@ export const getVectorStore = async ({
     });
 
     return vectorStore;
-  } else if (currentVectorStore === 'Local') {
-    let vectorStore: any = {};
-
-    fs.readFile(`vectors/${currentIndex}.json`, 'utf8', (err, data) => (vectorStore = data));
-
+  } else if (currentVectorStore === 'HNSWLib') {
+    const vectorStore = await HNSWLib.load(`vectors/${currentIndex}.bin`, new OpenAIEmbeddings());
     return vectorStore;
+  } else {
+    throw new Error('Invalid vector store');
   }
 };

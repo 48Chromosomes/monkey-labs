@@ -1,6 +1,6 @@
 import prompts from 'prompts';
 
-import { ingestMemory } from './ingestMemory';
+import { ingestHNSWLib } from './ingestHNSWLib';
 import { ingestPinecone } from './ingestPinecone';
 
 export const run = async () => {
@@ -10,7 +10,7 @@ export const run = async () => {
       name: 'vectorStoreMethod',
       message: 'Choose vector store: ',
       choices: [
-        { title: 'Memory', value: ingestMemory },
+        { title: 'HNSWLib', value: ingestHNSWLib },
         { title: 'Pinecone', value: ingestPinecone },
       ],
     },

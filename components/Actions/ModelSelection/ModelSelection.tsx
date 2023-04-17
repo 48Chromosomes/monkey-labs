@@ -13,13 +13,13 @@ export default function ModelSelection() {
 
   useEffect(() => {
     (async () => {
+      setCurrentIndex('-');
       const indexes = await getListIndexes({ currentVectorStore });
-      console.log(indexes);
       setCurrentIndex(indexes[0]);
       setIndexes([...indexes]);
       if (!currentIndex) setCurrentIndex(indexes[0]);
     })();
-  }, [currentIndex, setCurrentIndex, currentVectorStore]);
+  }, [currentVectorStore]);
 
   const selectIndex: (value: string) => void = (value) => {
     if (value !== currentIndex) {

@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { makeChain } from '@/utilities/pinecone/makechain';
-import { PineconeStore, VectorStore } from 'langchain/vectorstores';
+import { PineconeStore } from 'langchain/vectorstores/pinecone';
+import { HNSWLib } from 'langchain/vectorstores/hnswlib';
 
-import { getVectorStore } from '@/utilities/api/getVectorStore';
+import { getVectorStore } from '@/utilities/getVectorStore';
+import { makeChain } from '@/utilities/pinecone/makechain';
 import { ChatLog } from '@/types';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -17,7 +18,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // OpenAI recommends replacing newlines with spaces for best results
   const sanitizedQuestion = question.trim().replaceAll('\n', ' ');
 
-  const vectorStore: PineconeStore | VectorStore = await getVectorStore({ currentIndex, currentVectorStore });
+  const vectorStore: PineconeStore | HNSWLib = await getVectorStore({
+    currentIndex,
+    currentVectorStore,
+  });
 
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',

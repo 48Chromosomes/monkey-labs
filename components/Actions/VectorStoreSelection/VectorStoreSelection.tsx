@@ -1,4 +1,4 @@
-import React, { useEffect, useState, MouseEventHandler } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { HamburgerMenuIcon, CheckIcon } from '@radix-ui/react-icons';
 
@@ -9,13 +9,13 @@ import { AllowedVectorStores } from '@/types';
 
 export default function ModelSelection() {
   const { resetChat, currentVectorStore, setCurrentVectorStore } = useAppStore();
-  const VECTOR_STORES: AllowedVectorStores[] = ['Local', 'Pinecone'];
+  const VECTOR_STORES: AllowedVectorStores[] = ['Pinecone', 'HNSWLib'];
 
   useEffect(() => {
     if (!currentVectorStore) setCurrentVectorStore(VECTOR_STORES[0]);
   }, []);
 
-  const selectIndex: (value: string) => void = (value) => {
+  const selectVectorStore: (value: string) => void = async (value) => {
     if (value !== currentVectorStore) {
       setCurrentVectorStore(value as AllowedVectorStores);
       resetChat();
@@ -38,7 +38,7 @@ export default function ModelSelection() {
 
         <DropdownMenu.Portal>
           <DropdownMenu.Content side='bottom' className={styles.dropdownMenuContent} sideOffset={5}>
-            <DropdownMenu.RadioGroup value={currentVectorStore} onValueChange={selectIndex}>
+            <DropdownMenu.RadioGroup value={currentVectorStore} onValueChange={selectVectorStore}>
               {VECTOR_STORES.map((vectorStore, index) => (
                 <DropdownMenu.RadioItem key={index} className={styles.dropdownMenuItem} value={vectorStore}>
                   <DropdownMenu.ItemIndicator className={styles.dropdownMenuItemIndicator}>
