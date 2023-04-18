@@ -9,7 +9,7 @@ import { AllowedVectorStores } from '@/types';
 
 export default function ModelSelection() {
   const { resetChat, currentVectorStore, setCurrentVectorStore } = useAppStore();
-  const VECTOR_STORES: AllowedVectorStores[] = ['Pinecone', 'HNSWLib'];
+  const VECTOR_STORES: AllowedVectorStores[] = ['HNSWLib', 'Pinecone'];
 
   useEffect(() => {
     if (!currentVectorStore) setCurrentVectorStore(VECTOR_STORES[0]);
