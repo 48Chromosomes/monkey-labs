@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const indexesList = await pinecone.listIndexes();
 
     res.status(200).json(indexesList);
-  } else if (req.body.currentVectorStore === 'Local') {
+  } else if (req.body.currentVectorStore === 'HNSWLib') {
     fs.readdir('vectors', (err, files) => {
       const indexesList: string[] = [];
 

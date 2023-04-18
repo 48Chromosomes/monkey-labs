@@ -1,12 +1,17 @@
+@import '@/styles/variables';
+
 .consoleContainer {
   position: relative;
-  height: 50vh;
   background-color: #f6f6f6;
   padding-bottom: 4.5em;
-  width: 800px;
-  height: 90vh;
-  border-radius: 8px;
+  width: 100%;
   margin: 0 auto;
+  flex-grow: 1;
+  height: 100vh;
+
+  @media screen and (min-width: $mobile-breakpoint) {
+    width: calc(100% - $sidebar-width);
+  }
 
   .chatLogContainer {
     display: flex;
@@ -15,8 +20,9 @@
     position: relative;
     overflow-y: scroll;
     padding: 1rem 1rem 2rem 1rem;
-    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
-    height: 85vh;
+    height: 90vh;
+    max-width: 1000px;
+    margin: 0 auto;
 
     .log {
       display: flex;
