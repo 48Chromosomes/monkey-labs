@@ -57,6 +57,7 @@ export const getDirectoryLoader = async () => {
     '.jsonl': (path) => new JSONLinesLoader(path, '/html'),
     '.txt': (path) => new TextLoader(path),
     '.csv': (path) => new CSVLoader(path, 'text'),
+    '.rst': (path) => new TextLoader(path),
   });
 
   const rawDocs: Document[] = await loader.load();
@@ -92,36 +93,13 @@ export const checkIndex = async (indexName: string) => {
     if (createIndex) {
       console.log(`Creating index '${indexName}'...`);
       await pinecone.createIndex({ createRequest: { name: indexName, dimension: 1536 } });
-      await pollIndex({ indexName });
+      console.log('Exiting...');
     } else {
       console.log('Exiting...');
-      process.exit(1);
     }
+
+    process.exit(1);
   }
-};
-
-const pollIndex = ({ indexName }: { indexName: string }) => {
-  console.log('Waiting for index to init...');
-  const maxAttempts = 100;
-  let attempts = 0;
-
-  const executePoll = async (resolve: any, reject: any) => {
-    const pinecone = await initPinecone();
-    const result = await pinecone.describeIndex({ indexName });
-    console.log(attempts, result);
-    const { database } = result;
-    attempts++;
-
-    if (database?.status?.ready) {
-      return resolve(result);
-    } else if (maxAttempts && attempts === maxAttempts) {
-      return reject(new Error('Exceeded max attempts'));
-    } else {
-      setTimeout(executePoll, 10000, resolve, reject);
-    }
-  };
-
-  return new Promise(executePoll);
 };
 
 export const getInitialPromptsPinecone = async () => {
