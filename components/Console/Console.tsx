@@ -52,7 +52,7 @@ export default function Console() {
     let stream = '';
 
     try {
-      fetchEventSource(`http://${process.env.NEXT_PUBLIC_APP_URL}:${process.env.NEXT_PUBLIC_EXPRESS_PORT}/chat`, {
+      fetchEventSource(`${process.env.NEXT_PUBLIC_APP_URL}:${process.env.NEXT_PUBLIC_EXPRESS_PORT}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
