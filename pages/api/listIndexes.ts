@@ -14,6 +14,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     fs.readdir(path.join(process.cwd(), '/vectors'), (err, files) => {
       const indexesList: string[] = [];
 
+      // Filter out hidden files
+      files = files.filter((item) => !/(^|\/)\.[^\/\.]/g.test(item));
+
       files.forEach((file) => indexesList.push(file.split('.')[0]));
 
       res.status(200).json(indexesList);

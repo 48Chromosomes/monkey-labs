@@ -7,17 +7,22 @@ import styles from './ModelSelection.module.scss';
 import { useAppStore } from '@/stores/AppStore';
 import { getListIndexes } from '@/utilities/api/getListIndexes';
 
+import Loading from '@/components/Loading/Loading';
+
 export default function ModelSelection() {
   const { resetChat, currentIndex, setCurrentIndex, currentVectorStore } = useAppStore();
   const [indexes, setIndexes] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       setCurrentIndex('-');
       const indexes = await getListIndexes({ currentVectorStore });
       setCurrentIndex(indexes[0]);
-      setIndexes([...indexes]);
+      setIndexes(indexes);
       if (!currentIndex) setCurrentIndex(indexes[0]);
+      setLoading(false);
     })();
   }, [currentVectorStore]);
 
@@ -30,6 +35,8 @@ export default function ModelSelection() {
 
   return (
     <div className={styles.indexesContainer}>
+      {loading && <Loading text='Loading models...' />}
+
       <div className={styles.currentIndexLabel}>
         <span>Current model</span>
         {currentIndex}
