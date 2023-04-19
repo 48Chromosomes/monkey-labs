@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.status(200).json(indexesList);
   } else if (req.body.currentVectorStore === 'HNSWLib') {
-    fs.readdir('vectors', (err, files) => {
+    fs.readdir('./vectors', (err, files) => {
       const indexesList: string[] = [];
 
       files.forEach((file) => indexesList.push(file.split('.')[0]));
