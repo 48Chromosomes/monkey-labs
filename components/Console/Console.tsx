@@ -40,9 +40,7 @@ export default function Console() {
 
     const question = query.trim();
 
-    if (question.length === 0) {
-      return;
-    }
+    if (question.length === 0) return;
 
     setLoading(true);
     setError(null);
@@ -54,7 +52,7 @@ export default function Console() {
     let stream = '';
 
     try {
-      fetchEventSource('/api/chat', {
+      fetchEventSource(`http://localhost:${process.env.NEXT_PUBLIC_EXPRESS_PORT}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
