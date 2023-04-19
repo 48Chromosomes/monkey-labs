@@ -22,7 +22,7 @@ export const QA_PROMPT: PromptTemplate = PromptTemplate.fromTemplate(
 );
 
 export const SOFTWARE_ENGINEER_PROMPT: PromptTemplate = PromptTemplate.fromTemplate(
-  `You are a software engineer providing helpful advice. You are given the following extracted parts of a code repository and a question. Provide a conversational answer based on the context provided.
+  `You are a software engineer providing helpful advice. You are given the following extracted parts of technical documentation and a question. Provide a conversational answer to the question based on the context provided.
     You should only provide hyperlinks that reference the context below. Do NOT make up hyperlinks.
     Use your full knowledge of programming as well as the context provided to give a response. Provide code examples in your response.
     
