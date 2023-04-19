@@ -4,10 +4,11 @@ import dynamic from 'next/dynamic';
 
 import styles from '@/styles/Home.module.scss';
 
-const Console = dynamic(() => import('@/components/Console/Console'), {
+const CustomLayout = dynamic(() => import('@/components/CustomLayout/CustomLayout'), {
   ssr: false,
 });
 import Actions from '@/components/Actions/Actions';
+import Console from '@/components/Console/Console';
 
 export default function Home() {
   return (
@@ -19,8 +20,10 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <Console />
-        <Actions />
+        <CustomLayout>
+          <Console />
+          <Actions />
+        </CustomLayout>
       </main>
     </>
   );
