@@ -80,6 +80,7 @@ export default function Console() {
               setSourceDocs(chunk.sourceDocs);
             } else {
               stream = stream + chunk.data;
+              console.log(chunk.data);
               setMessageStream(stream);
             }
           }
