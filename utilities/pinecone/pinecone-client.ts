@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 import { PineconeClient } from '@pinecone-database/pinecone';
 
-if (!process.env.PINECONE_ENVIRONMENT || !process.env.PINECONE_API_KEY) {
+if ((process.env.NODE_ENV && !process.env.PINECONE_ENVIRONMENT) || !process.env.PINECONE_API_KEY) {
   throw new Error('Pinecone environment or api key vars missing');
 }
 
