@@ -148,28 +148,30 @@ export default function Console() {
           )}
         </div>
 
-        <form className={styles.form} onSubmit={onSubmit} ref={formRef}>
-          <input
-            ref={textInputRef}
-            type='text'
-            className={styles.promptText}
-            value={query}
-            name='text'
-            onChange={onChange}
-          />
-
-          {listenerActive && (
-            <Listener
-              onListenerBegin={onListenerBegin}
-              onListenerComplete={onListenerComplete}
-              onListenerResult={onListenerResult}
+        <div className={styles.formContainer}>
+          <form className={styles.form} onSubmit={onSubmit} ref={formRef}>
+            <input
+              ref={textInputRef}
+              type='text'
+              className={styles.promptText}
+              value={query}
+              name='text'
+              onChange={onChange}
             />
-          )}
 
-          <button className={styles.button} type='submit'>
-            <Image src='/images/send.svg' alt='Send' width={20} height={20} />
-          </button>
-        </form>
+            {listenerActive && (
+              <Listener
+                onListenerBegin={onListenerBegin}
+                onListenerComplete={onListenerComplete}
+                onListenerResult={onListenerResult}
+              />
+            )}
+
+            <button className={styles.button} type='submit'>
+              <Image src='/images/send.svg' alt='Send' width={20} height={20} />
+            </button>
+          </form>
+        </div>
       </div>
     </>
   );
