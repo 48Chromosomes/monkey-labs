@@ -37,9 +37,5 @@
   "devDependencies": {
     "stylelint": "^15.3.0",
     "stylelint-prettier": "^3.0.0"
-  },
-  "engines": {
-    "node": "^18.15.0",
-    "npm": "^9.5.0"
   }
 }
