@@ -3,12 +3,12 @@
 $content-max-width: 1000px;
 
 .consoleContainer {
+  display: flex;
+  flex-direction: column;
   position: relative;
   background-color: #f6f6f6;
-  width: 100%;
   margin: 0 auto;
-  height: 95vh;
-  overflow-y: scroll;
+  height: 100vh;
 
   @media screen and (min-width: $mobile-breakpoint) {
     width: calc(100% - $sidebar-width);
@@ -17,11 +17,15 @@ $content-max-width: 1000px;
   .chatLogContainer {
     display: flex;
     flex-direction: column;
+    flex-flow: column nowrap;
+    flex-grow: 1;
     align-items: center;
     position: relative;
     padding: 1rem 1rem 2rem 1rem;
+    width: 100%;
     max-width: $content-max-width;
     margin: 0 auto;
+    overflow-y: scroll;
 
     .log {
       display: flex;
@@ -92,10 +96,6 @@ $content-max-width: 1000px;
   }
 
   .formContainer {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
     box-shadow: inset 0 7px 9px -7px rgba(0, 0, 0, 0.1);
     background: #f6f6f6;
 
