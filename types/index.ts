@@ -1,5 +1,4 @@
 import { Document } from 'langchain/document';
-import { PromptTemplate } from 'langchain/prompts';
 
 export type ChatLog = {
   role: 'apiMessage' | 'userMessage';
@@ -36,8 +35,4 @@ export type AppStoreInterface = (
   setCurrentRole: ({ roleId }: { roleId: AllowedRoles }) => void;
   getRoles: () => Promise<void>;
   setCurrentVectorStore: (vectorStore: AllowedVectorStores) => void;
-};
-
-export type Prompts = {
-  [key: string]: PromptTemplate;
 };

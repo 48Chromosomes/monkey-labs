@@ -9,6 +9,7 @@ import { Document } from 'langchain/document';
 import styles from './Console.module.scss';
 
 import { useAppStore } from '@/stores/AppStore';
+import { url } from '@/utilities/server';
 import { ChatLog } from '@/types';
 
 import ChatAvatar from '@/components/Console/Avatar/Avatar';
@@ -52,10 +53,11 @@ export default function Console() {
     let stream = '';
 
     try {
-      fetchEventSource(`${process.env.NEXT_PUBLIC_APP_URL}:${process.env.NEXT_PUBLIC_EXPRESS_PORT}/chat`, {
+      fetchEventSource(`${url}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
         },
         body: JSON.stringify({
           question,

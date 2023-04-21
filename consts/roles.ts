@@ -14,7 +14,7 @@ export const ROLES: Role[] = [
     label: 'Software Engineer',
     description:
       'The Software Engineer role will act as a coder, analyzing the given problem and attempt to give a solution based on the documentation training documentation.',
-    temperature: 0.2,
+    temperature: 0,
     prompt: 'SOFTWARE_ENGINEER_PROMPT',
   },
   {
